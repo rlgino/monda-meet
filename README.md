@@ -7,6 +7,7 @@ Meeting app to calls
 * simple-peer
 * chance
 * react-router-dom
+* Material UI
 
 ### Source
 * [Let's build a video conferencing app](https://dev.to/kannndev/let-s-build-a-video-conferencing-app-pp)
