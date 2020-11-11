@@ -1,5 +1,3 @@
-let serverURL = 'http://localhost:3001'
-if (process.env.NODE_ENV === 'production')
-    serverURL = 'https://monda-meet.herokuapp.com/'
+let serverURL = process.env.REACT_APP_MMSERVER || 'http://localhost:3001'
 
 export { serverURL }
