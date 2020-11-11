@@ -4,6 +4,7 @@ import Peer from 'simple-peer';
 import Video from './Video'
 
 import * as Chance from 'chance';
+import { serverURL } from '../config';
 
 const chance = new Chance();
 
@@ -26,7 +27,7 @@ function Room(props) {
             .then((stream) => {
                 refVideo.current.srcObject = stream;
 
-                socketRef.current = io.connect('https://monda-meet.herokuapp.com/');
+                socketRef.current = io.connect(serverURL);
 
                 // sending the user details and roomid to join in the room
                 socketRef.current.emit('join-room', roomId, userDetails);
