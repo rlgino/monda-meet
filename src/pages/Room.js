@@ -5,6 +5,7 @@ import Video from './Video'
 
 import * as Chance from 'chance';
 import { serverURL } from '../config';
+import { Grid, Typography } from '@material-ui/core';
 
 const chance = new Chance();
 
@@ -131,21 +132,27 @@ function Room(props) {
     }
 
     return (
-        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <video muted ref={refVideo} autoPlay playsInline />
-                <span>{userDetails.name}</span>
-            </div>
+        <Grid container direction="row" justify="space-around" wrap="wrap" spacing={2} style={{ marginTop: ".5em" }} >
+            <Grid item xs={6} sm={3}>
+                <div style={{ display: 'flex', flexDirection: 'column', border: "black 1px solid", maxHeight: 300, maxWidth: 300, boxShadow: "10px 5px 5px black" }} >
+                    <video muted ref={refVideo} autoPlay playsInline style={{ maxHeight: 300, maxWidth: 300 }} />
+                    <Grid container style={{ width: "100%", padding: ".3em" }} justify="center">
+                        <Typography color="primary" variant="h5">Yo ({userDetails.name})</Typography>
+                    </Grid>
+                </div>
+            </Grid>
             {
                 peers.map((peer, index) => {
                     return (
-                        <Video key={peersRef.current[index].peerId}
-                            peer={peer.peerObj}
-                            name={peersRef.current[index].name} />
+                        <Grid item xs={6} sm={3}>
+                            <Video key={peersRef.current[index].peerId}
+                                peer={peer.peerObj}
+                                name={peersRef.current[index].name} />
+                        </Grid>
                     )
                 })
             }
-        </div>
+        </Grid >
     )
 }
 
