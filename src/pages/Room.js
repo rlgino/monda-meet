@@ -5,7 +5,7 @@ import Video from './Video'
 
 import * as Chance from 'chance';
 import { serverURL } from '../config';
-import { Grid } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 
 const chance = new Chance();
 
@@ -132,11 +132,13 @@ function Room(props) {
     }
 
     return (
-        <Grid container direction="row" justify="space-around" wrap="wrap" spacing={2} >
+        <Grid container direction="row" justify="space-around" wrap="wrap" spacing={2} style={{ marginTop: ".5em" }} >
             <Grid item xs={6} sm={3}>
-                <div style={{ display: 'flex', flexDirection: 'column', border: "black 1px solid" }} >
-                    <video muted ref={refVideo} autoPlay playsInline />
-                    <span>{userDetails.name}</span>
+                <div style={{ display: 'flex', flexDirection: 'column', border: "black 1px solid", maxHeight: 300, maxWidth: 300, boxShadow: "10px 5px 5px black" }} >
+                    <video muted ref={refVideo} autoPlay playsInline style={{ maxHeight: 300, maxWidth: 300 }} />
+                    <Grid container style={{ width: "100%", padding: ".3em" }} justify="center">
+                        <Typography color="primary" variant="h5">{userDetails.name}</Typography>
+                    </Grid>
                 </div>
             </Grid>
             {
