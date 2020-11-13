@@ -5,7 +5,8 @@ import Video from './Video'
 
 import * as Chance from 'chance';
 import { serverURL } from '../config';
-import { Grid, Typography } from '@material-ui/core';
+import { Button, Grid, Typography } from '@material-ui/core';
+import { Mic, MicOff, Videocam, VideocamOff } from '@material-ui/icons';
 
 const chance = new Chance();
 
@@ -15,6 +16,8 @@ function Room(props) {
         name: chance.name(),
     });
     const [peers, setPeers] = useState([]);
+    const [enabledAudio, setEnabledAudio] = useState(true)
+    const [enabledVideo, setEnabledVideo] = useState(true)
 
     const socketRef = useRef();
     const refVideo = useRef();
@@ -24,7 +27,7 @@ function Room(props) {
 
     useEffect(() => {
         navigator.mediaDevices
-            .getUserMedia({ video: true, audio: true })
+            .getUserMedia({ video: enabledVideo, audio: enabledAudio })
             .then((stream) => {
                 refVideo.current.srcObject = stream;
 
@@ -97,6 +100,14 @@ function Room(props) {
             });
     }, []);
 
+    const changeVideoSettings = () => {
+        setEnabledVideo(!enabledVideo)
+    }
+
+    const changeAudioSettings = () => {
+        setEnabledAudio(enabledAudio)
+    }
+
     function createPeer(userToSignal, callerId, stream) {
         const peer = new Peer({
             initiator: true,
@@ -138,6 +149,16 @@ function Room(props) {
                     <video muted ref={refVideo} autoPlay playsInline style={{ maxHeight: 300, maxWidth: 300 }} />
                     <Grid container style={{ width: "100%", padding: ".3em" }} justify="center">
                         <Typography color="primary" variant="h5">Yo ({userDetails.name})</Typography>
+                        <Button color="primary" onClick={e => changeVideoSettings()}>
+                            {
+                                enabledVideo ? <VideocamOff /> : <Videocam />
+                            }
+                        </Button>
+                        <Button color="secondary" onClick={e => changeAudioSettings()}>
+                            {
+                                enabledAudio ? <MicOff /> : <Mic />
+                            }
+                        </Button>
                     </Grid>
                 </div>
             </Grid>
