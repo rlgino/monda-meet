@@ -14,7 +14,7 @@ function App() {
         <Switch>
           <Route path="/" component={Home} exact />
           {
-            process.env.NODE_ENV !== 'production' ? <Route path="/prueba" component={Test} exact /> : <></>
+            process.env.NODE_ENV !== 'production' ? <Route path="/prueba" component={Test} exact /> : null
           }
           <Route path='/room/:roomId' component={Room} />
         </Switch>
