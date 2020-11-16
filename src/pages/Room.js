@@ -7,6 +7,7 @@ import * as Chance from 'chance';
 import { serverURL } from '../config';
 import { Button, Grid, Typography } from '@material-ui/core';
 import { Mic, MicOff, Videocam, VideocamOff } from '@material-ui/icons';
+import { UsePreferences } from '../context/preferences';
 
 const chance = new Chance();
 
@@ -16,8 +17,8 @@ function Room(props) {
         name: chance.name(),
     });
     const [peers, setPeers] = useState([]);
-    const [enabledAudio, setEnabledAudio] = useState(true)
-    const [enabledVideo, setEnabledVideo] = useState(true)
+
+    const { name, enabledVideo, setEnabledVideo, enabledAudio, setEnabledAudio } = UsePreferences()
 
     const socketRef = useRef();
     const refVideo = useRef();
@@ -26,6 +27,9 @@ function Room(props) {
     const roomId = props.match.params.roomId;
 
     useEffect(() => {
+        userDetails.name = name
+        setUserDetails(userDetails)
+
         navigator.mediaDevices
             .getUserMedia({ video: enabledVideo, audio: enabledAudio })
             .then((stream) => {
@@ -98,6 +102,9 @@ function Room(props) {
                     setPeers((users) => users.filter((p) => p.peerId !== payload));
                 });
             });
+        return () => {
+            console.log("Disconnect");
+        }
     }, []);
 
     const changeVideoSettings = () => {

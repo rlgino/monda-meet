@@ -5,11 +5,11 @@ const Preferences = React.createContext()
 export function PreferencesProvider(props) {
     const [enabledVideo, setEnabledVideo] = useState(true)
     const [enabledAudio, setEnabledAudio] = useState(true)
-    const [name, setName] = useState("")
+    const [name, setName] = useState("asd")
 
     const value = React.useMemo(() => {
         return {
-            enabledAudio, enabledVideo, setEnabledVideo, setEnabledAudio, setName
+            enabledAudio, enabledVideo, name, setEnabledVideo, setEnabledAudio, setName
         }
     }, [enabledVideo, enabledAudio, name])
 

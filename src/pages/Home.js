@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
 import * as Chance from 'chance'
 import Button from '@material-ui/core/Button';
-import { TextField, Container, Grid, Typography } from '@material-ui/core';
+import { UsePreferences } from '../context/preferences'
+import { TextField, Container, Grid } from '@material-ui/core';
 import { Mic, MicOff, Videocam, VideocamOff } from '@material-ui/icons';
 
 const chance = new Chance();
 
 function Home({ history }) {
     const [roomId, setRoomId] = useState('')
-    const [name, setName] = useState("")
-    const [enabledVideo, setEnabledVideo] = useState(true)
-    const [enabledAudio, setEnabledAudio] = useState(true)
+
+    const { name, setName, enabledVideo, setEnabledVideo, enabledAudio, setEnabledAudio } = UsePreferences()
 
     const navigateToRoom = (e) => {
         if (!roomId) {
