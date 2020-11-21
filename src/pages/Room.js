@@ -5,7 +5,9 @@ import Video from './Video'
 
 import * as Chance from 'chance';
 import { serverURL } from '../config';
-import { Grid, Typography } from '@material-ui/core';
+import { Button, Grid, Typography } from '@material-ui/core';
+import { Mic, MicOff, Videocam, VideocamOff } from '@material-ui/icons';
+import { UsePreferences } from '../context/preferences';
 
 const chance = new Chance();
 
@@ -16,6 +18,8 @@ function Room(props) {
     });
     const [peers, setPeers] = useState([]);
 
+    const { name, enabledVideo, setEnabledVideo, enabledAudio, setEnabledAudio } = UsePreferences()
+
     const socketRef = useRef();
     const refVideo = useRef();
     const peersRef = useRef([]);
@@ -23,8 +27,11 @@ function Room(props) {
     const roomId = props.match.params.roomId;
 
     useEffect(() => {
+        userDetails.name = name
+        setUserDetails(userDetails)
+
         navigator.mediaDevices
-            .getUserMedia({ video: true, audio: true })
+            .getUserMedia({ video: enabledVideo, audio: enabledAudio })
             .then((stream) => {
                 refVideo.current.srcObject = stream;
 
@@ -95,7 +102,18 @@ function Room(props) {
                     setPeers((users) => users.filter((p) => p.peerId !== payload));
                 });
             });
+        return () => {
+            console.log("Disconnect");
+        }
     }, []);
+
+    const changeVideoSettings = () => {
+        setEnabledVideo(!enabledVideo)
+    }
+
+    const changeAudioSettings = () => {
+        setEnabledAudio(enabledAudio)
+    }
 
     function createPeer(userToSignal, callerId, stream) {
         const peer = new Peer({
@@ -138,6 +156,16 @@ function Room(props) {
                     <video muted ref={refVideo} autoPlay playsInline style={{ maxHeight: 300, maxWidth: 300 }} />
                     <Grid container style={{ width: "100%", padding: ".3em" }} justify="center">
                         <Typography color="primary" variant="h5">Yo ({userDetails.name})</Typography>
+                        <Button color="primary" onClick={e => changeVideoSettings()}>
+                            {
+                                enabledVideo ? <VideocamOff /> : <Videocam />
+                            }
+                        </Button>
+                        <Button color="secondary" onClick={e => changeAudioSettings()}>
+                            {
+                                enabledAudio ? <MicOff /> : <Mic />
+                            }
+                        </Button>
                     </Grid>
                 </div>
             </Grid>
